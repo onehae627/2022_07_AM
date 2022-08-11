@@ -16,7 +16,7 @@ public class Main {
 
 		while (true) {
 			System.out.printf("명령어) ");
-			String cmd = sc.nextLine();
+			String cmd = sc.nextLine().trim();
 
 			if (cmd.equals("exit")) {
 				break;
@@ -44,11 +44,33 @@ public class Main {
 					System.out.println("게시글이 없습니다.");
 					continue;
 				}
-				
+
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
 					System.out.printf("%d,%s\n", article.id, article.title);
 				}
+			} else if (cmd.startsWith("article detail ")) {
+				String[] cmdBits = cmd.split(" ");
+
+				int id = Integer.parseInt(cmdBits[2]);
+				boolean found = false;
+
+				for (int i = 0; i < articles.size(); i++) {
+					Article article = articles.get(i);
+
+					if (article.id == id) {
+						found = true;
+						break;
+					}
+				}
+
+				if (found == false) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+					continue;
+				} else {
+					System.out.printf("%d번 게시물은 존재합니다.\n", id);
+				}
+
 			} else {
 				System.out.println("존재하지 않는 명령어입니다");
 			}
