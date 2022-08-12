@@ -5,14 +5,21 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+	private static List<Article> articles;
+
+	static {
+		articles = new ArrayList<>();
+	}
+
 	public static void main(String[] args) {
 		System.out.println("==프로그램 시작==");
+
+		makeTestDate();
 
 		Scanner sc = new Scanner(System.in);
 
 		int lastArticleID = 0;
-
-		List<Article> articles = new ArrayList<>();
 
 		while (true) {
 			System.out.printf("명령어) ");
@@ -72,13 +79,13 @@ public class Main {
 					continue;
 				}
 				foundArticle.increaseHit();
-				
+
 				System.out.printf("번호 :%d\n", foundArticle.id);
 				System.out.printf("제목 :%s\n", foundArticle.title);
 				System.out.printf("내용 :%s\n", foundArticle.body);
 				System.out.printf("날짜 :%s\n", foundArticle.regDate);
 
-			}else if (cmd.startsWith("article modify ")) {
+			} else if (cmd.startsWith("article modify ")) {
 				String[] cmdBits = cmd.split(" ");
 
 				int id = Integer.parseInt(cmdBits[2]);
@@ -108,7 +115,7 @@ public class Main {
 
 				System.out.printf("%d번 글을 수정했습니다.\n", id);
 
-			}else if (cmd.startsWith("article delete ")) {
+			} else if (cmd.startsWith("article delete ")) {
 				String[] cmdBits = cmd.split(" ");
 
 				int id = Integer.parseInt(cmdBits[2]);
@@ -142,6 +149,15 @@ public class Main {
 
 		System.out.println("==프로그램 끝==");
 	}
+
+	private static void makeTestDate() {
+		System.out.println("테스트를 위한 데이터를 생성합니다.");
+		
+		articles.add(new Article(1, Util.getDateStr(), "제목1", "내용1", 10));
+		articles.add(new Article(2, Util.getDateStr(), "제목2", "내용2", 20));
+		articles.add(new Article(3, Util.getDateStr(), "제목3", "내용3", 30));
+
+	}
 }
 
 class Article {
@@ -151,14 +167,19 @@ class Article {
 	String body;
 	int hit;
 
-	Article(int id, String regDate, String title, String body) {
+	public Article(int id, String regDate, String title, String body) {
+		this(id, regDate, title, body, 0);
+	}
+	
+	public Article(int id, String regDate, String title, String body, int hit) {
 		this.id = id;
 		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
-		this.hit = 0;
+		this.hit = hit;
 
 	}
+
 	public void increaseHit() {
 		hit++;
 	}
