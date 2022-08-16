@@ -40,13 +40,43 @@ public class App {
 				continue;
 			}
 			if (cmd.equals("member join")) {
+				String loginPw = null;
+				String loginPwC = null;
+				String loginId = null;
+				
 				int id = lastMemberId + 1;
 				lastMemberId = id;
 				String regDate = Util.getDateStr();
-				System.out.printf("아이디 : ");
-				String loginId = sc.nextLine();
-				System.out.printf("비밀번호 : ");
-				String loginPw = sc.nextLine();
+				
+				while(true) {
+					System.out.printf("아이디 : ");
+					loginId = sc.nextLine();
+					
+					if(isJoinableLoginId(loginId) ==  false) {
+						System.out.printf("%s는(은) 이미 사용중인 아이디입니다.\n", loginId);
+						continue;
+					}
+					break;
+					
+				}
+				
+				
+				
+				while(true) {
+					System.out.printf("비밀번호 : ");
+					loginPw = sc.nextLine();
+					System.out.printf("비밀번호확인 : ");
+					loginPwC = sc.nextLine();
+					
+					if (loginPw.equals(loginPwC) == false) {
+						System.out.println("비밀번호를 다시 입력해주세요");
+						continue;
+					}
+					break;
+					
+				}
+				
+				
 				System.out.printf("이름 : ");
 				String name = sc.nextLine();
 
@@ -56,7 +86,8 @@ public class App {
 				System.out.printf("%d번 회원이 생성되었습니다.\n", id);
 
 			}
-			if (cmd.equals("article write")) {
+				
+			else if (cmd.equals("article write")) {
 				int id = lastArticleId + 1;
 				lastArticleId = id;
 				String regDate = Util.getDateStr();
@@ -143,6 +174,26 @@ public class App {
 		sc.close();
 
 		System.out.println("==프로그램 끝==");
+	}
+
+	private boolean isJoinableLoginId(String loginId) {
+		int index = getMemberIndexByLoginId(loginId);
+		if(index == -1) {
+			return true;
+		}
+		return false;
+	}
+
+	private int getMemberIndexByLoginId(String loginId) {
+		int i = 0;
+		for (Member member : members) {
+
+			if (member.loginId.equals(loginId)) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
 	}
 
 	private static int getArticleIndexById(int id) {
